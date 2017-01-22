@@ -4,4 +4,4 @@ sudo dpkg -i ngx_build/*.deb
 sudo install -m 644 nginx.default /etc/default/nginx
 sudo install -m 755 nginx.init /etc/init.d/nginx
 sudo install -m 644 nginx.service /lib/systemd/system/nginx.service
-sudo install -m 644 nginx.logrotaate /etc/logrotate.d/nginx
+sudo install -m 644 nginx.logrotate /etc/logrotate.d/nginx

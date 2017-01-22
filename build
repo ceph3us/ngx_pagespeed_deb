@@ -4,8 +4,9 @@ set -ex
 
 # get version from env or use default
 NPS_VERSION=${NPS_VERSION:-1.11.33.4}
-NGINX_VERSION=${NGINX_VERSION:-1.11.4}
+NGINX_VERSION=${NGINX_VERSION:-latest}
 OPENSSL_VERSION=${OPENSSL_VERSION:-1.0.2j}
+PSOL_VERSION=${PSOL_VERSION:-1.11.33.4}
 
 echo "Building ngx_pagespeed ${NPS_VERSION}"
 
@@ -33,11 +34,11 @@ tar zxf nginx-${NGINX_VERSION}.tar.gz
 
 # steps from https://github.com/pagespeed/ngx_pagespeed
 # download pagespeed
-wget https://github.com/pagespeed/ngx_pagespeed/archive/release-${NPS_VERSION}-beta.zip
-unzip release-${NPS_VERSION}-beta.zip
-cd ngx_pagespeed-release-${NPS_VERSION}-beta/
-wget https://dl.google.com/dl/page-speed/psol/${NPS_VERSION}.tar.gz
-tar -xzvf ${NPS_VERSION}.tar.gz  # extracts to psol/
+wget https://github.com/pagespeed/ngx_pagespeed/archive/${NPS_VERSION}-stable.zip
+unzip ${NPS_VERSION}-stable.zip
+cd ngx_pagespeed-${NPS_VERSION}-stable/
+wget https://dl.google.com/dl/page-speed/psol/${PSOL_VERSION}.tar.gz
+tar -xzvf ${PSOL_VERSION}.tar.gz  # extracts to psol/
 cd ..
 
 cd nginx-${NGINX_VERSION}
@@ -58,7 +59,7 @@ cd nginx-${NGINX_VERSION}
 --http-scgi-temp-path=/var/lib/nginx/scgi_temp \
 --with-cc-opt='-g -O2 -fstack-protector --param=ssp-buffer-size=4 -Wformat -Werror=format-security -Wp,-D_FORTIFY_SOURCE=2' \
 --with-ld-opt='-Wl,-z,relro -Wl,--as-needed' \
-	--add-module=../ngx_pagespeed-release-${NPS_VERSION}-beta \
+	--add-module=../ngx_pagespeed-release-${NPS_VERSION}-stable \
 	${PS_NGX_EXTRA_FLAGS} \
 	--with-http_ssl_module \
 	--with-http_gzip_static_module \
